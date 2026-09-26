@@ -22,3 +22,17 @@ def kill_and_clean_locks():
                 lock.unlink()
             except Exception as e:
                 logger.warning(f"Не удалось удалить {lock}: {e}")
+
+def check_browser() -> str | None:
+    """Ищет бинарник Brave в системе."""
+    browser_path = (
+        shutil.which("brave-browser")
+        or shutil.which("brave")
+        or shutil.which("brave.exe")
+    )
+    if browser_path:
+        logger.info(f"Найден браузер Brave: {browser_path}")
+        return browser_path
+
+    logger.error("Браузер Brave не найден в PATH!")
+    return None
