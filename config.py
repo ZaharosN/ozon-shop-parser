@@ -17,7 +17,6 @@ DATA_DIR.mkdir(exist_ok=True)
 
 LOG_FILE = DATA_DIR / "parser.log"
 EXCEL_FILE = DATA_DIR / "mouse_scraper.xlsx"
-STATE_FILE = DATA_DIR / "state.json"
 DB_FILE = DATA_DIR / "orders.db"
 
 BRAVE_PROFILE_DIR = BASE_DIR / "brave_profile"
