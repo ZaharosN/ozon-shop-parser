@@ -38,6 +38,12 @@ def save_to_excel(products: list[dict], filename: str = EXCEL_FILE) -> str:
         ]
         ws.append(row)
 
+    for row in ws.iter_rows(min_row=2):
+        row[2].number_format = "#,##0"
+        row[3].number_format = "#,##0"
+        row[5].number_format = "0.0"  
+        row[6].number_format = "#,##0"
+
     for col in ws.columns:
         max_len = 0
         col_letter = col[0].column_letter
@@ -45,7 +51,11 @@ def save_to_excel(products: list[dict], filename: str = EXCEL_FILE) -> str:
             if cell.value:
                 max_len = max(max_len, len(str(cell.value)))
 
-        ws.column_dimensions[col_letter].width = max(max_len + 3, 12)
+        calculated_width = max(max_len + 3, 12)
+        ws.column_dimensions[col_letter].width = min(calculated_width, 50)
+
+    ws.freeze_panes = "A2"
+    ws.auto_filter.ref = ws.dimensions
 
     wb.save(filename)
     logger.success(f"Данные успешно сохранены в Excel: {filename} (Всего строк: {len(products)})")
