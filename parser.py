@@ -33,7 +33,7 @@ def extract_products(json_responses: list[dict]) -> list[dict]:
 
 def parse_product(item: dict) -> dict:
     """Парсит один товар"""
-    product = {
+    product: dict = {
         "sku": None,
         "title": None,
         "price": None,
@@ -68,9 +68,13 @@ def parse_product(item: dict) -> dict:
         if block_type == "priceV2":
             try:
                 prices = block["priceV2"]["price"]
-                product["price"] = prices[0]["text"]
+                price_text = prices[0]["text"]
+                digits = re.sub(r"[^\d]", "", price_text)
+                product["price"] = int(digits) if digits else None
                 if len(prices) > 1:
-                    product["old_price"] = prices[1]["text"]
+                    old_text = prices[1]["text"]
+                    old_digits = re.sub(r"[^\d]", "", old_text)
+                    product["old_price"] = int(old_digits) if old_digits else None
                 product["discount"] = block["priceV2"].get("discount")
             except (KeyError, IndexError, TypeError):
                 pass
