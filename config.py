@@ -16,8 +16,8 @@ DATA_DIR = BASE_DIR / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
 LOG_FILE = DATA_DIR / "parser.log"
-EXCEL_FILE = DATA_DIR / "mouse_scraper.xlsx"
-DB_FILE = DATA_DIR / "orders.db"
+EXCEL_FILE = DATA_DIR / "gurman_ceremony.xlsx"
+DB_FILE = DATA_DIR / "gurman_ceremony.db"
 
 BRAVE_PROFILE_DIR = BASE_DIR / "brave_profile"
 CDP_PORT = 9222
