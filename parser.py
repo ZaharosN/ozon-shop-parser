@@ -90,9 +90,13 @@ def parse_product(item: dict) -> dict:
                         if i.get("type") == "text"
                     ]
                     if len(texts) >= 1:
-                        product["rating"] = texts[0]
+                        try:
+                            product["rating"] = float(texts[0])
+                        except (ValueError, TypeError):
+                            product["rating"] = None
                     if len(texts) >= 2:
-                        product["reviews"] = texts[1]
+                        reviews_digits = re.sub(r"[^\d]", "", texts[1])
+                        product["reviews"] = int(reviews_digits) if reviews_digits else None
                 except (KeyError, TypeError):
                     pass
 
