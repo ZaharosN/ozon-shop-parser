@@ -97,3 +97,14 @@ def parse_product(item: dict) -> dict:
                     pass
 
     return product
+
+def parse_all_products(json_responses: list[dict]) -> list[dict]:
+    """Извлекает и парсит все товары""" 
+    raw_product = extract_products(json_responses)
+    products = []
+    for item in raw_product:
+        prod = parse_product(item)
+        products.append(prod)
+
+    logger.info(f"Распарсено товаров: {len(products)}")
+    return products
