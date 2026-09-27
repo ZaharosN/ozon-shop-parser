@@ -27,4 +27,42 @@ def init_db():
             """
         )
         conn.commit()
-    logger.info(f"База данных инициализирована: {DB_FILE}")    
+    logger.info(f"База данных инициализирована: {DB_FILE}")  
+  
+
+def save_to_db(products: list[dict]) -> int:
+    """Сохраняет список товаров а БД, возвращает кол-во добавленных записей"""
+    if not products:
+        logger.warning("Нет данных для сохранения в БД")
+        return 0
+      
+    init_db()
+    added_count = 0
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        for item in products:
+            try:
+                cursor.execute(
+                    """
+                    INSERT OR IGNORE INTO gurman_cremony (sku, title, price, old_price, discount, rating, reviews, link)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        item.get("sku"),
+                        item.get("title"),
+                        item.get("price"),
+                        item.get("old_price"),
+                        item.get("discount"),
+                        item.get("rating"),
+                        item.get("reviews"),
+                        item.get("link")
+                    ),
+                )
+                if cursor.rowcount > 0:
+                    added_count += 1
+            except Exception as e:
+                logger.error(f"Ошибка записи SKU {item.get('sku')} в БД: {e}")
+
+        conn.commit()
+    logger.success(f"Успешно добавлено новых записей в БД: {added_count} (из {len(products)})")
+    return added_count  
