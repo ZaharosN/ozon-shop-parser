@@ -12,15 +12,15 @@ def init_db():
         cursor = conn.cursor()
         cursor.execute(
             """
-            CREATE TABLE IF NOT EXISTS gurman_cremony (
+            CREATE TABLE IF NOT EXISTS gurman_ceremony (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             sku TEXT UNIQUE NOT NULL,
             title TEXT,
-            price REAL,
-            old_price REAL,
-            discount REAL,
-            rating TEXT,
-            reviews TEXT,
+            price INTEGER,
+            old_price INTEGER,
+            discount TEXT,
+            rating REAL,
+            reviews INTEGER,
             link TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
@@ -44,7 +44,7 @@ def save_to_db(products: list[dict]) -> int:
             try:
                 cursor.execute(
                     """
-                    INSERT OR IGNORE INTO gurman_cremony (sku, title, price, old_price, discount, rating, reviews, link)
+                    INSERT OR IGNORE INTO gurman_ceremony (sku, title, price, old_price, discount, rating, reviews, link)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
