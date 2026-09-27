@@ -23,7 +23,7 @@ def extract_products(json_responses: list[dict]) -> list[dict]:
                 if sku in seen_sku:
                     continue
                 seen_sku.add(sku)
-                all_products.extend(item)
+                all_products.append(item)
 
     logger.info(f"Всего уникальных товаров: {len(all_products)}")
     return all_products
